@@ -7,6 +7,7 @@ package dwnld;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 /**
  *
  * @author bit
@@ -23,10 +24,17 @@ public class Dwnld {
             try {
                 in = new BufferedInputStream(new URL(urlString).openStream());
                 fout = new FileOutputStream(filename);
-                final byte data[] = new byte[1024];
-                int count;
-                while ((count = in.read(data, 0, 1024)) != -1) {
+                final byte data[] = new byte[1];
+                final byte size[] = new byte[102400000];
+                int count,sz,i=0;
+                sz=in.read(size, 0, 102400000);
+                System.out.println(sz + "Downloading ");
+                while ((count = in.read(data, 0, 1)) != -1) {
+                    
                     fout.write(data, 0, count);
+                    Thread.sleep(100);
+                    System.out.println(i);
+                    i++;
                 }
                 in.close();
                 fout.close();
@@ -53,3 +61,4 @@ public class Dwnld {
 
 
 // http://ohsaa.org/portals/0/Sports/Basketball-Boys/Schottpano.JPG
+// http://cdn6.bigcommerce.com/s-2sxhiat0li/product_images/theme_images/moltenusa_homepage-basketball4__05239.jpg
