@@ -19,25 +19,38 @@ public class Dwnld {
      */
     
     public static void saveUrl(final String filename, final String urlString) {
+        try{
+            int len;    
+            URL url=new URL(urlString);
+            HttpURLConnection conn = null;
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("HEAD");
+            conn.getInputStream();
+            len=conn.getContentLength();
             BufferedInputStream in = null;
             FileOutputStream fout = null;
-            try {
-                in = new BufferedInputStream(new URL(urlString).openStream());
-                fout = new FileOutputStream(filename);
-                final byte data[] = new byte[1];
-                final byte size[] = new byte[102400000];
-                int count,sz,i=0;
-                sz=in.read(size, 0, 102400000);
-                System.out.println(sz + "Downloading ");
-                while ((count = in.read(data, 0, 1)) != -1) {
+            in = new BufferedInputStream(url.openStream());
+            fout = new FileOutputStream(filename);
+            final byte data[] = new byte[1024];       
+            int count,i=0,sz10,p=0;
+            sz10=len/10240;          
+            System.out.println(filename + " of size " + len + " bytes downloading... ");
+            
+            
+            while ((count = in.read(data, 0, 1024)) != -1) {
+                i++;
+                if(i==sz10){
+                    p++;
+                    System.out.println(p*10+"% completed... "); 
                     
-                    fout.write(data, 0, count);
-                    Thread.sleep(100);
-                    System.out.println(i);
-                    i++;
+                    i=0;
                 }
-                in.close();
-                fout.close();
+                
+                fout.write(data, 0, count);
+                Thread.sleep(10);
+            }
+            in.close();
+            fout.close();
             } catch(Exception e){
                 e.printStackTrace();
             }
