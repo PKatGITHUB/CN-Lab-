@@ -1,23 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dwnld;
 import java.net.*;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-/**
- *
- * @author bit
- */
 public class Dwnld {
-
-    /**
-     * @param args the command line arguments
-     */
-    
     public static void saveUrl(final String filename, final String urlString) {
         try{
             int len;    
@@ -34,18 +20,14 @@ public class Dwnld {
             final byte data[] = new byte[1024];       
             int count,i=0,sz10,p=0;
             sz10=len/10240;          
-            System.out.println(filename + " of size " + len + " bytes downloading... ");
-            
-            
+            System.out.println(filename + " of size " + len + " bytes downloading... ");            
             while ((count = in.read(data, 0, 1024)) != -1) {
                 i++;
                 if(i==sz10){
                     p++;
                     System.out.println(p*10+"% completed... "); 
-                    
                     i=0;
                 }
-                
                 fout.write(data, 0, count);
                 Thread.sleep(10);
             }
@@ -56,7 +38,6 @@ public class Dwnld {
             }
         }
     public static void main(String[] args) {
-        // TODO code application logic here
         BufferedReader inp =new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Enter the url : ");
         String S,F;
@@ -69,9 +50,6 @@ public class Dwnld {
             ex.printStackTrace();
         }
     }
-    
 }
-
-
 // http://ohsaa.org/portals/0/Sports/Basketball-Boys/Schottpano.JPG
 // http://cdn6.bigcommerce.com/s-2sxhiat0li/product_images/theme_images/moltenusa_homepage-basketball4__05239.jpg
